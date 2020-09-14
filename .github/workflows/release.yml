@@ -16,7 +16,7 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v1
         with:
-          node-version: 10
+          node-version: 10.x
 
       - name: Install dependencies
         run: yarn install --frozen-lockfile
@@ -28,4 +28,4 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
-        run: npx semantic-release --dry-run
+        run: npx semantic-release --dry-run #@TODO replace dry-run
