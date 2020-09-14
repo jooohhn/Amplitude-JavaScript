@@ -1,5 +1,5 @@
 {
-  "name": "amplitude-js",
+  "name": "@jtran/amplitude-js",
   "author": "Amplitude <support@amplitude.com>",
   "version": "0.0.0-development",
   "license": "MIT",
@@ -10,7 +10,7 @@
   ],
   "repository": {
     "type": "git",
-    "url": "https://github.com/amplitude/amplitude-javascript.git"
+    "url": "https://github.com/jooohhn/amplitude-javascript.git"
   },
   "main": "amplitude.umd.js",
   "react-native": "amplitude.native.js",
@@ -70,9 +70,9 @@
     "semantic-release": "semantic-release"
   },
   "bugs": {
-    "url": "https://github.com/amplitude/amplitude-javascript/issues"
+    "url": "https://github.com/jooohhn/amplitude-javascript/issues"
   },
-  "homepage": "https://github.com/amplitude/amplitude-javascript#readme",
+  "homepage": "https://github.com/jooohhn/amplitude-javascript#readme",
   "directories": {
     "test": "test"
   }
