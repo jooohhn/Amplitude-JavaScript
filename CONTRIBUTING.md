@@ -1,8 +1,11 @@
 # Contributing to the Amplitude SDK for JavaScript
+
 🎉 Thanks for your interest in contributing! 🎉
 
 ## Ramping Up
+
 ### Intro
+
 - There are three ways for SDK to be loaded
   - Standard NPM package
   - Snippet in `<script>` tag
@@ -11,6 +14,7 @@
 - Chek out the [Amplitude Instrumentation Explorer]((https://chrome.google.com/webstore/detail/amplitude-instrumentation/acehfjhnmhbmgkedjmjlobpgdicnhkbp)) to help logging events during development
 
 ### Architecture
+
 - `index.js` is the main entrypoint of SDK
 - Stubbed methods are used when client imports via `<script>` snippet
   - Allows app to not be blocked while real JS SDK is loaded in
@@ -24,6 +28,7 @@
     - only applicable to snippet import
 
 ### Setting Up Development
+
 - Cloning, installing, and building
 ```
 git clone git@github.com:amplitude/Amplitude-JavaScript.git
@@ -31,3 +36,12 @@ cd Amplitude-JavaScript
 make # Runs tests and generate builds
 yarn dev # Start development utility. Open localhost:9000 in your browser to access
 ```
+
+### Release
+
+Releases are managed by [semantic-release](https://github.com/semantic-release/semantic-release). 
+It is a tool that will scan commits since the last release, bump the correct semver, publish, and create changelogs.
+
+This means developers will have to properly label commits with `<type>(<optional scope>): <subject>`
+
+https://github.com/semantic-release/semantic-release#commit-message-format
