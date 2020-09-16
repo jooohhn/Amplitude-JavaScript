@@ -9,8 +9,8 @@ module.exports = {
     }],
     ["@semantic-release/release-notes-generator", {
       "preset": "angular",
-    }]
-    // '@semantic-release/npm',
-    // '@semantic-release/github' 
+    }],
+    "@semantic-release/npm",
+    "@semantic-release/github",
   ],
 }
