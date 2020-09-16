@@ -9,8 +9,14 @@ module.exports = {
     }],
     ["@semantic-release/release-notes-generator", {
       "preset": "angular",
+      
     }],
-    "@semantic-release/npm",
-    "@semantic-release/github",
+    ["@semantic-release/npm", {
+      "npmPublish": true,
+      "tarballDir": "dist",
+    }],
+    ["@semantic-release/github", {
+      "assets": "amplitude*min.js"
+    }]
   ],
 }
