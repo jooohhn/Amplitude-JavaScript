@@ -39,9 +39,21 @@ yarn dev # Start development utility. Open localhost:9000 in your browser to acc
 
 ### Release
 
-Releases are managed by [semantic-release](https://github.com/semantic-release/semantic-release). 
-It is a tool that will scan commits since the last release, bump the correct semver, publish, and create changelogs.
+Releases are managed by [semantic-release](https://github.com/semantic-release/semantic-release). It is a tool that will scan commits since the last release, determine the next [semantic version number](https://semver.org/), publish, and create changelogs.
 
-This means developers will have to properly label commits with `<type>(<optional scope>): <subject>`
+It requires developers to use [formal commit formats](https://github.com/semantic-release/semantic-release#commit-message-format). Below is a template
 
-https://github.com/semantic-release/semantic-release#commit-message-format
+```
+<type>(<optional scope>): <subject>
+
+<optional BREAKING CHANGE and description> 
+
+<optional body>
+``` 
+
+These conventions are enforced by [commitlint](https://github.com/conventional-changelog/commitlint/) ran on [husky](https://github.com/typicode/husky) git hooks. Developers can run `yarn commit` as a utility for creating these types of commits.
+
+- Any commit with `BREAKING CHANGES` in the body will create a breaking release
+- Else the `feat` type will do a feature release
+- Else the `fix` type will do a patch release
+- Else no release will occur
