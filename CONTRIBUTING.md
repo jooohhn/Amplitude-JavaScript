@@ -37,23 +37,17 @@ make # Runs tests and generate builds
 yarn dev # Start development utility. Open localhost:9000 in your browser to access
 ```
 
+### Pull Request Conventions
+
+PR titles should follow [conventional commit standards](https://www.conventionalcommits.org/en/v1.0.0/). A [probot app](https://github.com/zeke/semantic-pull-requests) checks for this when a PR is opened.
+
 ### Release
 
 Releases are managed by [semantic-release](https://github.com/semantic-release/semantic-release). It is a tool that will scan commits since the last release, determine the next [semantic version number](https://semver.org/), publish, and create changelogs.
 
-It requires developers to use [formal commit formats](https://github.com/semantic-release/semantic-release#commit-message-format). Below is a template
+Release conditions: 
 
-```
-<type>(<optional scope>): <subject>
-
-<optional BREAKING CHANGE and description> 
-
-<optional body>
-``` 
-
-These conventions are enforced by [commitlint](https://github.com/conventional-changelog/commitlint/) ran on [husky](https://github.com/typicode/husky) git hooks. Developers can run `yarn commit` as a utility for creating these types of commits.
-
-- Any commit with `BREAKING CHANGES` in the body will create a breaking release
-- Else the `feat` type will do a feature release
-- Else the `fix` type will do a patch release
+- Any commit with `!` after the type/scope or `BREAKING CHANGES` in the footer will create a `major` release
+- Else `feat` in title will do a `minor` release
+- Else `fix` or `perf` in title will do a `patch` release
 - Else no release will occur
