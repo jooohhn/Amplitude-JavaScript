@@ -11,12 +11,13 @@ titleOnly: true
 types:
   - feat
   - fix
-  - docs
-  - style
-  - refactor
   - perf
+  - docs
   - test
+  - refactor
+  - style
   - build
   - ci
   - chore
   - revert
+  
