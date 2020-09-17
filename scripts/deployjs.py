@@ -1,56 +1,81 @@
 import argparse
 import os
 import sys
+from boto3 import Session
+from botocore.exceptions import ClientError
 
-from boto.s3 import connect_to_region
-from boto.s3.connection import OrdinaryCallingFormat
-from boto.s3.key import Key
+unzipped_args = {
+    'Metadata': {
+        'CacheControl': 'max-age=31536000',
+    },
+    'ACL': 'public-read',
+}
+zipped_args = {
+    'Metadata': {
+        'CacheControl': 'max-age=31536000',
+        'ContentEncoding': 'gzip',
+    },
+    'ACL': 'public-read',
+}
 
 
-def upload(key, from_file):
-    key.set_contents_from_filename(from_file)
-    key.make_public()
-    return key
+def check_exists(key):
+    try:
+        key.load()
+    except ClientError as e:
+        print('client error exist')
+        if e.response['Error']['Code'] == '404':
+            print('does not exist')
+            return False
+    else:
+        print('does not exist')
+        return True
 
+
+def upload(bucket, file, args):
+    bucket.upload_file(
+        os.path.join('dist', file),
+        os.path.join('libs', file),
+        ExtraArgs=args,
+    )
 
 def main():
     parser = argparse.ArgumentParser()
-    parser.add_argument('--path', '-p', required=True, help='Path to amplitude-javascript repo')
-    parser.add_argument('--version', '-v', required=True, help='Version to deploy')
+    parser.add_argument('--version', '-v', required=True,
+                        help='Version to deploy')
     args = parser.parse_args()
+    s3 = Session(
+        aws_access_key_id=os.environ.get('AWS_ACCESS_KEY_ID'),
+        aws_secret_access_key=os.environ.get('AWS_SECRET_ACCESS_KEY'),
+        region_name='us-west-2',
+    ).resource('s3')
 
-    s3conn = connect_to_region(
-        'us-west-2',
-        host='s3-us-west-2.amazonaws.com',
-        calling_format=OrdinaryCallingFormat(),
-    )
-    bucket = s3conn.get_bucket('com.amplitude.public')
+    bucket = s3.Bucket(os.environ.get('S3_BUCKET_NAME'))
 
     files = [
-        'amplitude-%s.js' % args.version,
-        'amplitude-%s-min.js' % args.version,
-        'amplitude-%s.umd.js' % args.version,
-        'amplitude-%s-min.umd.js' % args.version,
+        f'amplitude-{args.version}.js',
+        f'amplitude-{args.version}-min.js',
+        f'amplitude-{args.version}.umd.js',
+        f'amplitude-{args.version}-min.umd.js'
     ]
     for file in files:
-        print(file)
-        key = Key(bucket, os.path.join('libs', file))
-        key.set_metadata('Cache-Control', 'max-age=31536000')
-        upload(key, os.path.join(args.path, 'dist', file))
+        if check_exists(s3.Object('com.amplitude.public', os.path.join('libs', file))):
+            sys.exit(f'ERROR: {file} already exists and shouldn\'t be republished. Consider releasing a new version')
+        print(f'Uploading {file}')
+        upload(bucket, file, unzipped_args)
 
     gz_files = [
-        'amplitude-%s-min.gz.js' % args.version,
-        'amplitude-%s-min.umd.gz.js' % args.version,
+        f'amplitude-{args.version}-min.gz.js',
+        f'amplitude-{args.version}-min.umd.gz.js'
     ]
     for file in gz_files:
-        print(file)
-        key = Key(bucket, os.path.join('libs', file))
-        key.set_metadata('Cache-Control', 'max-age=31536000')
-        key.set_metadata('Content-Encoding', 'gzip')
-        upload(key, os.path.join(args.path, 'dist', file))
+        if check_exists(s3.Object('com.amplitude.public', file)):
+            sys.exit(f'{file} already exists!')
+        print(f'Uploading {file}')
+        upload(bucket, file, zipped_args)
 
+    print('Success: S3 upload completed')
     return 0
 
 if __name__ == '__main__':
-    result = main()
-    sys.exit(result)
+    sys.exit(main())
