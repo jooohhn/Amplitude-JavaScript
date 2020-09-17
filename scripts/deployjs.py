@@ -5,16 +5,12 @@ from boto3 import Session
 from botocore.exceptions import ClientError
 
 unzipped_args = {
-    'Metadata': {
-        'CacheControl': 'max-age=31536000',
-    },
+    'CacheControl': 'max-age=31536000',
     'ACL': 'public-read',
 }
 zipped_args = {
-    'Metadata': {
-        'CacheControl': 'max-age=31536000',
-        'ContentEncoding': 'gzip',
-    },
+    'CacheControl': 'max-age=31536000',
+    'ContentEncoding': 'gzip',
     'ACL': 'public-read',
 }
 
