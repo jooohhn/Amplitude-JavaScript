@@ -9,11 +9,9 @@ module.exports = {
     }],
     ["@semantic-release/release-notes-generator", {
       "preset": "angular",
-      
     }],
     ["@semantic-release/npm", {
       "npmPublish": true,
-      "tarballDir": "dist",
     }],
     ["@semantic-release/github", {
       "assets": "amplitude*min.js"
@@ -21,6 +19,9 @@ module.exports = {
     ["@semantic-release/git", {
       "assets": ["package.json", "src/amplitude-snippet.js"],
       "message": "chore(release): ${nextRelease.version} [skip ci]\n\n${nextRelease.notes}"
+    }],
+    ["@semantic-release/exec", {
+      "publishCmd": "python scripts/deployjs.py --version ${nextRelease.version}"
     }],
   ],
 }

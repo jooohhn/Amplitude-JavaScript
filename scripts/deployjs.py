@@ -18,17 +18,13 @@ zipped_args = {
     'ACL': 'public-read',
 }
 
-
 def check_exists(key):
     try:
         key.load()
     except ClientError as e:
-        print('client error exist')
         if e.response['Error']['Code'] == '404':
-            print('does not exist')
             return False
     else:
-        print('does not exist')
         return True
 
 
@@ -59,7 +55,7 @@ def main():
         f'amplitude-{args.version}-min.umd.js'
     ]
     for file in files:
-        if check_exists(s3.Object('com.amplitude.public', os.path.join('libs', file))):
+        if check_exists(s3.Object(os.environ.get('S3_BUCKET_NAME'), os.path.join('libs', file))):
             sys.exit(f'ERROR: {file} already exists and shouldn\'t be republished. Consider releasing a new version')
         print(f'Uploading {file}')
         upload(bucket, file, unzipped_args)
@@ -69,7 +65,7 @@ def main():
         f'amplitude-{args.version}-min.umd.gz.js'
     ]
     for file in gz_files:
-        if check_exists(s3.Object('com.amplitude.public', file)):
+        if check_exists(s3.Object(os.environ.get('S3_BUCKET_NAME'), file)):
             sys.exit(f'{file} already exists!')
         print(f'Uploading {file}')
         upload(bucket, file, zipped_args)
