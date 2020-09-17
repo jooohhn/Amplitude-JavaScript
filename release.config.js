@@ -14,6 +14,7 @@ module.exports = {
       "npmPublish": true,
     }],
     ["@semantic-release/exec", {
+      "prepareCmd": "make release",
       "publishCmd": "python scripts/deployjs.py --version ${nextRelease.version}",
       "failCmd": "npm unpublish @jtran/amplitude-js@${nextRelease.version}"  // @TODO replace @jtran
     }],

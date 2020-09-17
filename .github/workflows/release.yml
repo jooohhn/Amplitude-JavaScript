@@ -44,9 +44,6 @@ jobs:
       # - name: Build and unit tests @TODO Renable this at PR or flaky test fix
       #   run: make test
 
-      - name : Generate snippets
-        run: make release
-
       - name: Release # Uses release.config.js
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
