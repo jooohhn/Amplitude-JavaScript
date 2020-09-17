@@ -10,11 +10,12 @@ module.exports = {
     ["@semantic-release/release-notes-generator", {
       "preset": "angular",
     }],
-    ["@semantic-release/exec", {
-      "publishCmd": "python scripts/deployjs.py --version ${nextRelease.version}"
-    }],
     ["@semantic-release/npm", {
       "npmPublish": true,
+    }],
+    ["@semantic-release/exec", {
+      "publishCmd": "python scripts/deployjs.py --version ${nextRelease.version}",
+      "failCmd": "npm unpublish @jtran/amplitude-js@${nextRelease.version}"  // @TODO replace @jtran
     }],
     ["@semantic-release/github", {
       "assets": "amplitude*.js"
@@ -22,9 +23,6 @@ module.exports = {
     ["@semantic-release/git", {
       "assets": ["package.json", "src/amplitude-snippet.js"],
       "message": "chore(release): ${nextRelease.version} [skip ci]\n\n${nextRelease.notes}"
-    }],
-    ["@semantic-release/exec", {
-      "publishCmd": "python scripts/deployjs.py --version ${nextRelease.version}"
     }],
   ],
 }
