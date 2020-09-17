@@ -24,8 +24,8 @@ jobs:
       # - name: Build and unit tests @TODO Renable this at PR or flaky test fix
       #   run: make test
 
-      - name : Build
-        run: make build
+      - name : Prepare
+        run: make release
 
       - name: Release
         env:
