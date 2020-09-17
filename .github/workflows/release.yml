@@ -25,7 +25,7 @@ jobs:
         with:
           python-version: '3.8.x'
       - name: Install boto3 for S3 upload script
-        run: pip install boto3
+        run: pip install boto3==1.14.63
 
       - name: Setup Node.js
         uses: actions/setup-node@v1
