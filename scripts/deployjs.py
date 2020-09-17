@@ -5,10 +5,12 @@ from boto3 import Session
 from botocore.exceptions import ClientError
 
 unzipped_args = {
+    'ContentType': 'application/javascript',
     'CacheControl': 'max-age=31536000',
     'ACL': 'public-read',
 }
 zipped_args = {
+    'ContentType': 'application/javascript',
     'CacheControl': 'max-age=31536000',
     'ContentEncoding': 'gzip',
     'ACL': 'public-read',
