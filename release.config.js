@@ -10,6 +10,9 @@ module.exports = {
     ["@semantic-release/release-notes-generator", {
       "preset": "angular",
     }],
+    ["@semantic-release/exec", {
+      "publishCmd": "python scripts/deployjs.py --version ${nextRelease.version}"
+    }],
     ["@semantic-release/npm", {
       "npmPublish": true,
     }],
