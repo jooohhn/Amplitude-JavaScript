@@ -14,7 +14,7 @@ module.exports = {
       "npmPublish": true,
     }],
     ["@semantic-release/github", {
-      "assets": "amplitude*min.js"
+      "assets": "amplitude*.js"
     }],
     ["@semantic-release/git", {
       "assets": ["package.json", "src/amplitude-snippet.js"],
