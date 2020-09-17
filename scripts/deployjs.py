@@ -70,7 +70,7 @@ def main():
         print(f'Uploading {file}')
         upload(bucket, file, zipped_args)
 
-    print('Success: S3 upload completed')
+    print(f'Success: S3 upload completed. Checkout https://cdn.amplitude.com/libs/amplitude-{args.version}.js')
     return 0
 
 if __name__ == '__main__':
