@@ -1,1 +1,2 @@
-- Test for patch release
+- Test for feat release
+- Test for feat release 2
