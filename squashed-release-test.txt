@@ -1,3 +1,0 @@
-- Test for multi-line release 1
-- test for multi-line release 2
-- test for multi-line release 3

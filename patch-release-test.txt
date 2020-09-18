@@ -1,3 +1,0 @@
-- Test for patch release
-- Test for patch release 2
-- Test for patch release 3
