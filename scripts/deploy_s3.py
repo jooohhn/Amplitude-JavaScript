@@ -10,6 +10,10 @@ unzipped_args = {
     'ACL': 'public-read',
 }
 zipped_args = {
+    # 'Metadata': {
+    #     'CacheControl': 'max-age=31536000',
+    #     'ContentEncoding': 'gzip',
+    # },
     'ContentType': 'application/javascript',
     'CacheControl': 'max-age=31536000',
     'ContentEncoding': 'gzip',
