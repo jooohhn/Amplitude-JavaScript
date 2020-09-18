@@ -1,7 +1,4 @@
-# Always validate the PR title AND all the commits
-titleAndCommits: true
-
-# Always validate the PR title, and ignore the commits
+# Validate the PR title, and ignore the commits
 titleOnly: true
 
 # By default types specified in commitizen/conventional-commit-types is used.
@@ -20,4 +17,3 @@ types:
   - ci
   - chore
   - revert
-  
