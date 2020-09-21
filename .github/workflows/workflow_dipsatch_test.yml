@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
     inputs:
       dryRun:
-        description: 'Do a dry run instead of real release'     
+        description: 'Do a dry run release (false or true)'     
         required: true
         default: 'true'
 
@@ -13,10 +13,18 @@ jobs:
     name: Authorize
     runs-on: ubuntu-18.04
     steps:
+      - uses: octokit/request-action@v2.x
+        id: get_permissions
+        with:
+          route: GET /repos/:repository/collaborator/${{ github.actor }}/permission
+          repository: ${{ github.repository }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - run: "echo ${{ steps.get_permissions.outputs.data }}"
       - name: ${{ github.actor }} permission check to do a release
         uses: octokit/request-action@v2.0.0
         with:
-          route: GET /repos/:repository/collaborators/${{ github.actor }}
+          route: GET /repos/:repository/collaborators/john
           repository: ${{ github.repository }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
