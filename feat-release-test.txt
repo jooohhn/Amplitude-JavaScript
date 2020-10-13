@@ -1,4 +1,0 @@
-- Test for feat release
-- Test for feat release 2
-- Test for feat release 3
-- Test for feat release 4
