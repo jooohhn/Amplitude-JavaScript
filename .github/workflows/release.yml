@@ -1,10 +1,10 @@
-name: Workflow dispatch test
+name: Release
 
 on: 
   workflow_dispatch:
     inputs:
       dryRun:
-        description: 'Do a dry run release (false or true)'     
+        description: 'Do a dry run to preview instead of a real release'     
         required: true
         default: 'true'
 
@@ -13,18 +13,10 @@ jobs:
     name: Authorize
     runs-on: ubuntu-18.04
     steps:
-      - uses: octokit/request-action@v2.x
-        id: get_permissions
-        with:
-          route: GET /repos/:repository/collaborator/${{ github.actor }}/permission
-          repository: ${{ github.repository }}
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      - run: "echo ${{ steps.get_permissions.outputs.data }}"
       - name: ${{ github.actor }} permission check to do a release
         uses: octokit/request-action@v2.0.0
         with:
-          route: GET /repos/:repository/collaborators/john
+          route: GET /repos/:repository/collaborators/${{ github.actor }}
           repository: ${{ github.repository }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -33,6 +25,12 @@ jobs:
     name: Release
     runs-on: ubuntu-18.04
     needs: [authorize]
+    env:
+      GIT_AUTHOR_NAME: amplitude-sdk-bot
+      GIT_AUTHOR_EMAIL: amplitude-sdk-bot@users.noreply.github.com
+      GIT_COMMITTER_NAME: amplitude-sdk-bot
+      GIT_COMMITTER_EMAIL: amplitude-sdk-bot@users.noreply.github.com
+
     steps:
       - name: Checkout
         uses: actions/checkout@v1
@@ -42,9 +40,9 @@ jobs:
         with:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws-region: us-west-2
+          aws-region: ${{ secrets.AWS_REGION }}
 
-      - name: node_modules/ cache
+      - name: node_modules cache
         uses: actions/cache@v2
         with:
           path: '**/node_modules'
@@ -54,7 +52,7 @@ jobs:
         uses: actions/setup-python@v2
         with:
           python-version: '3.8.x'
-      - name: Install boto3 for deployjs.python
+      - name: Install boto3 for deploy_s3.python
         run: pip install boto3==1.14.63
 
       - name: Setup Node.js
@@ -65,8 +63,8 @@ jobs:
       - name: Install dependencies
         run: yarn install --frozen-lockfile
 
-      # - name: Build and unit tests @TODO Renable this at PR or flaky test fix
-      #   run: make test
+      - name: Run tests
+        run: make test
 
       - name: Release --dry-run  # Uses release.config.js
         if: ${{ github.event.inputs.dryRun == 'true'}}
@@ -75,6 +73,7 @@ jobs:
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          AWS_REGION: ${{ secrets.AWS_REGION }}
           S3_BUCKET_NAME: ${{ secrets.S3_BUCKET_NAME }}
         run: npx semantic-release --dry-run
 
@@ -85,5 +84,6 @@ jobs:
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          AWS_REGION: ${{ secrets.AWS_REGION }}
           S3_BUCKET_NAME: ${{ secrets.S3_BUCKET_NAME }}
         run: npx semantic-release
