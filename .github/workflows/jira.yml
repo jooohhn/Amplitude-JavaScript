@@ -28,10 +28,10 @@ jobs:
           description: |
             ${{ github.event.issue.url}}
           fields: '{
-            "customfield_10006": 1039,
-            "customfield_11481": {"value": "Data Management"},
+            "customfield_10006": 1127,
+            "customfield_11481": {"value": "Data Connections 🚇"},
             "customfield_11200": {"value": "SDK"},
-            "labels": ["node"]
+            "labels": ["js"]
           }' # sprint, pillar, pod, labels
 
       - name: Log created issue
